@@ -196,7 +196,8 @@ class TodoList  extends React.PureComponent<Props, State> {
     var listIndex = this.state.todos.findIndex((t => t.id == this.state.activeList));
 
     if(listIndex != -1) {
-      taskList = this.state.todos[listIndex].tasks.map((task, index) => {
+      var sortedTasks = this.state.todos[listIndex].tasks.sort((a,b) => b.id - a.id)
+      taskList = sortedTasks.map((task, index) => {
 
         var pIcon;
         var cTaskComplete = (task.complete) ? "task-complete" : "";
