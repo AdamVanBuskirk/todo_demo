@@ -16,3 +16,7 @@
 .list-complete {
   text-decoration: line-through;
 }
+.heading {
+  color: #000;
+  font-weight:bold;
+}

@@ -6,6 +6,7 @@ import { addTodo, getTodos, deleteTodo } from '../endpoints/Todo'
 import { addTask, editTask, deleteTask } from '../endpoints/Task'
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import { BsBackspace, BsPencil } from'react-icons/bs'
+import { BiSortAlt2 } from 'react-icons/bi'
 import { IoTrashOutline } from 'react-icons/io5'
 import { FcHighPriority, FcLowPriority, FcMediumPriority} from 'react-icons/fc'
 import Notification from '../components/notification'
@@ -66,7 +67,7 @@ class TodoList  extends React.PureComponent<Props, State> {
       showAddTodoForm: false,
     })
   }
-
+  
   toggleAddTodoForm = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     this.setState({
@@ -100,7 +101,6 @@ class TodoList  extends React.PureComponent<Props, State> {
       priority: this.state.todos[todoIndex].tasks[taskIndex].priority,
       taskComplete: this.state.todos[todoIndex].tasks[taskIndex].complete
     })
-    
   }
 
   loadTodos = () => {
@@ -131,7 +131,7 @@ class TodoList  extends React.PureComponent<Props, State> {
         this.getTodos(data as Array<Todo>);
         Notification.success("To-dos", "To-do successfully added")
       }, (error) => {
-        Notification.error("To-dos", error.message)
+        Notification.error("To-dos", error)
       }); 
   }
 
@@ -142,7 +142,7 @@ class TodoList  extends React.PureComponent<Props, State> {
         this.getTodos(data as Array<Todo>);
         Notification.success("Tasks", "Task successfully added")
       }, (error) => {
-        Notification.error("Tasks", error.message)
+        Notification.error("Tasks", error)
       }); 
   }
 
@@ -153,7 +153,7 @@ class TodoList  extends React.PureComponent<Props, State> {
         this.setState({ showTaskForm: false })
         Notification.success("Tasks", "Task successfully saved")
       }, (error) => {
-        Notification.error("Tasks", error.message)
+        Notification.error("Tasks", error)
       }); 
   }
 
@@ -170,8 +170,9 @@ class TodoList  extends React.PureComponent<Props, State> {
 
     var isAddTodoDisabled = (this.state.name == "") ? true : false
     var isAddTaskDisabled = (this.state.description == "" || this.state.dueDate == "") ? true : false
+    var sortedTodos = this.state.todos.sort((a,b) => b.id - a.id)
 
-    var todoList = this.state.todos.map((todo, index) => {
+    var todoList = sortedTodos.map((todo, index) => {
 
       var totalTasks = todo.tasks.length
       var completedTasks = todo.tasks.filter(t => t.complete).length
