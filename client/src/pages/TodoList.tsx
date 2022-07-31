@@ -2,15 +2,13 @@ import React from "react"
 import { Link } from 'react-router-dom';
 import moment from "moment";
 import { Todo } from '../../../models/Todo'
-import { Task } from '../../../models/Task'
 import { addTodo, getTodos, deleteTodo } from '../endpoints/Todo'
 import { addTask, editTask, deleteTask } from '../endpoints/Task'
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import { BsBackspace, BsPencil } from'react-icons/bs'
 import { IoTrashOutline } from 'react-icons/io5'
 import { FcHighPriority, FcLowPriority, FcMediumPriority} from 'react-icons/fc'
-import { Store } from 'react-notifications-component';
-import 'react-notifications-component/dist/theme.css'
+import Notification from '../components/notification'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './TodoList.css'
 
@@ -77,9 +75,7 @@ class TodoList  extends React.PureComponent<Props, State> {
   }
 
   toggleAddTaskForm = (e: React.MouseEvent<HTMLAnchorElement>) => {
-  
     e.preventDefault();
-    
     this.setState({
       activeTask: -1,
       showTaskForm: !this.state.showTaskForm,
@@ -123,128 +119,41 @@ class TodoList  extends React.PureComponent<Props, State> {
     deleteTodo(id)
     .then((data) => {
       this.getTodos(data as Array<Todo>);
-      Store.addNotification({
-        title: "To-dos",
-        message: "To-do successfully removed",
-        type: "success",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true
-        }
-      });
+      Notification.success("To-dos", "To-do successfully removed")
     }, (error) => {
     });
   }
 
   addTodo = (e: React.FormEvent<HTMLFormElement>) => {
-    
     addTodo(e)
       .then((data) =>{
         this.setState({ name: "" });
         this.getTodos(data as Array<Todo>);
-        Store.addNotification({
-          title: "To-dos",
-          message: "To-do successfully added",
-          type: "success",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        Notification.success("To-dos", "To-do successfully added")
       }, (error) => {
-        Store.addNotification({
-          title: "To-dos",
-          message: error.message,
-          type: "danger",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        Notification.error("To-dos", error.message)
       }); 
   }
 
   addTask = (e: React.FormEvent<HTMLFormElement>) => {
-    
     addTask(e)
       .then((data) =>{
         this.setState({ description: "", dueDate: "", priority: 1 });
         this.getTodos(data as Array<Todo>);
-        Store.addNotification({
-          title: "Tasks",
-          message: "Task successfully added",
-          type: "success",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        Notification.success("Tasks", "Task successfully added")
       }, (error) => {
-        Store.addNotification({
-          title: "Tasks",
-          message: error.message,
-          type: "danger",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        Notification.error("Tasks", error.message)
       }); 
   }
 
   editTask = (e: React.FormEvent<HTMLFormElement>) => {
-    
     editTask(e)
       .then((data) =>{
         this.getTodos(data as Array<Todo>);
         this.setState({ showTaskForm: false })
-        Store.addNotification({
-          title: "Tasks",
-          message: "Task successfully saved",
-          type: "success",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        Notification.success("Tasks", "Task successfully saved")
       }, (error) => {
-        Store.addNotification({
-          title: "Tasks",
-          message: error.message,
-          type: "danger",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animate__animated", "animate__fadeIn"],
-          animationOut: ["animate__animated", "animate__fadeOut"],
-          dismiss: {
-            duration: 3000,
-            onScreen: true
-          }
-        });
+        Notification.error("Tasks", error.message)
       }); 
   }
 
@@ -252,19 +161,7 @@ class TodoList  extends React.PureComponent<Props, State> {
     deleteTask(taskId, listId)
     .then((data) => {
       this.getTodos(data as Array<Todo>);
-      Store.addNotification({
-        title: "Tasks",
-        message: "Task successfully removed",
-        type: "success",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-          duration: 3000,
-          onScreen: true
-        }
-      });
+      Notification.success("Tasks", "Task successfully removed")
     }, (error) => {
     });
   }
